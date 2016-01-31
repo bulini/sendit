@@ -1,6 +1,6 @@
 .rm_wrap{
 	width:740px;
-	
+
 }
 
 .rm_section{
@@ -14,7 +14,7 @@
 	font-weight:700;
 	width:200px;
 	display:block;
-	float:left;	
+	float:left;
 }
 .rm_input {
 	padding:30px 10px;
@@ -81,7 +81,7 @@
 .rm_title h3 img.inactive{
 	margin:-8px 10px 0 2px;
 	width:32px;
-	height:32px;	
+	height:32px;
 	background:url('images/pointer.png') no-repeat 0 0;
 	float:left;
 	-moz-border-radius:6px;
@@ -91,14 +91,14 @@
 .rm_title h3 img.active{
 	margin:-8px 10px 0 2px;
 	width:32px;
-	height:32px;	
+	height:32px;
 	background:url('images/pointer.png') no-repeat  0 -32px;
 	float:left;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 	border:1px solid #ccc;
 }
-		
+
 .rm_title h3:hover img{
 	border:1px solid #999;
 }
@@ -125,7 +125,7 @@
 .rm_table th, .rm_table td.feature{
 	border-color:#888;
 	}
-	
+
 .plugin_off {color:red;}
 .plugin_on{color:green;}
 
@@ -160,9 +160,9 @@
 .sendit-banner{
     background: url("images/sendit-small.png") no-repeat scroll 14px 11px #F5F5F5;
     border: 1px solid #D9D9D9;
+		margin-bottom: 2em;
     border-radius: 5px 5px 5px 5px;
     box-shadow: 1px 1px 0 #FFFFFF inset, -1px -1px 0 #FFFFFF inset;
-    margin: 4em 2em 2em 0;
     padding: 15px 15px 15px 110px;
     position: relative;
 }
@@ -174,7 +174,7 @@
 }
 .sendit-banner span {
     color: #595959;
-    display: block;
+
     font-size: 14px;
     line-height: 22px;
     text-shadow: 1px 1px 0 #FFFFFF;

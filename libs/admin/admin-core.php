@@ -434,8 +434,8 @@ function MainSettings($c='')
     //new 2.2.0
     $markup.='
 <div class="sendit-banner">
-	<span class="main">Welcome to the new Sendit '.SENDIT_VERSION.' control panel</span>
-	<span>Enhance your newsletter plugin by adding pro plugins! Learn more. <a target="_blank" title="Get Sendit" href="http://sendit.wordpressplanet.org/" class="button-primary">take a tour</a> and don\'t forget to subscribe our newsletter to be updated</span>
+	<h3>Welcome to the new Sendit '.SENDIT_VERSION.' control panel</h3>
+	<span>Enhance your newsletter plugin by adding pro plugins! Learn more.<br /><a target="_blank" title="Get Sendit" href="http://sendit.wordpressplanet.org/">take a tour</a> and don\'t forget to subscribe our newsletter to be updated</span>
 
 
 </div>';
@@ -1369,8 +1369,8 @@ if ( $_REQUEST['reset'] ) echo '<div id="message" class="updated fade"><p><stron
 
 
 <div class="" id="sendit-banner">
-	<span class="main">Welcome to the new <?php echo $themename; ?> <?php echo SENDIT_VERSION; ?> control panel</span>
-	<span>Enhance your newsletter plugin by adding pro plugins! Learn more. <a target="_blank" title="Get Sendit" href="http://sendit.wordpressplanet.org/" class="button-primary">take a tour</a></span>
+	<span class="main">Welcome to the new <?php echo $themename; ?> <?php echo SENDIT_VERSION; ?> panel</span>
+	<span>Enhance your newsletter plugin by adding pro plugins! Learn more. <a target="_blank" title="Get Sendit" href="http://sendit.wordpressplanet.org/">take a tour</a></span>
 
 
 </div>

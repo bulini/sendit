@@ -88,7 +88,7 @@ function sendit_cron_notice() {
         /* Check that the user hasn't already clicked to ignore the message */
 
     include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-	if(!is_plugin_active('sendit-scheduler/sendit-cron.php')){
+	if(!is_plugin_active('sendit-scheduler/sendit-cron.php') &&  !get_user_meta($user_id, 'sendit_cron_ignore')){
         echo '<div class="updated"><h3>'.__('It\'s time to upgrade your Sendit plugin to PRO version and schedule your newsletter', 'sendit').'</h3>
 				<span>'.__('Scheduling newsletters it is important to automate this process and send block of emails to avoid spam and hosting rate limits.','sendit').' <a target="_blank" title="Get Sendit" href="http://sendit.wordpressplanet.org/plugin-shop/sendit-pro/?utm_source=banner_pro&utm_medium=plugin&utm_campaign=sendit_231" class="button-primary">Buy Now Sendit Scheduler</a> | <a class="button-secondary" href="admin.php?page=sendit/libs/admin/admin-core.php&sendit_cron_ignore=0">Hide Notice</a></span>';
 
@@ -139,8 +139,62 @@ add_action('save_post', 'sendit_save_postdata');
 
 add_action('save_post', 'send_newsletter');
 
+/*
+Sendit Welcome Screen
+*/
 
+register_activation_hook( __FILE__, 'sendit_welcome_screen_activate' );
+function sendit_welcome_screen_activate() {
+  set_transient( '_sendit_welcome_screen_activation_redirect', true, 30 );
+}
 
+add_action( 'admin_init', 'sendit_welcome_screen_do_activation_redirect' );
+function sendit_welcome_screen_do_activation_redirect() {
+  // Bail if no activation redirect
+    if ( ! get_transient( '_sendit_welcome_screen_activation_redirect' ) ) {
+    return;
+  }
+
+  // Delete the redirect transient
+  delete_transient( '_sendit_welcome_screen_activation_redirect' );
+
+  // Bail if activating from network, or bulk
+  if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
+    return;
+  }
+
+  // Redirect to bbPress about page
+  wp_safe_redirect( add_query_arg( array( 'page' => 'sendit-welcome-screen-about' ), admin_url( 'index.php' ) ) );
+
+}
+
+add_action('admin_menu', 'sendit_welcome_screen_pages');
+
+function sendit_welcome_screen_pages() {
+  add_dashboard_page(
+    'Welcome To Welcome Screen',
+    'Welcome To Welcome Screen',
+    'read',
+    'sendit-welcome-screen-about',
+    'sendit_welcome_screen_content'
+  );
+}
+
+function sendit_welcome_screen_content() {
+  ?>
+  <div class="wrap">
+    <h2>New Sendit 3</h2>
+    <img src="">
+    <p>
+      A lot of things are changed. We added the Template manager for free and better subscription forms. Enjoy it!
+    </p>
+  </div>
+  <?php
+}
+add_action( 'admin_head', 'sendit_welcome_screen_remove_menus' );
+function sendit_welcome_screen_remove_menus() {
+    remove_submenu_page( 'index.php', 'sendit-welcome-screen-about' );
+}
 
 
 ?>
