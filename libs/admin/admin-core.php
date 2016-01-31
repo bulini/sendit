@@ -733,25 +733,25 @@ $pro_plugins = array(
 
     			array('Sendit Pro Template Manager',
         			  'sendit-pro-template-manager/sendit-pro-template-manager.php',
-        			  'http://sendit.wordpressplanet.org/plugin-shop/sendit-pro-template-manager/?panel_from_domain='.$siteurl,
-        			  'Want more for your Email Design? Would you like to preview your newsletter? Try now the new Template Manager for email templates and download the 3 scaffolding sample templates',
+        			  'http://sendit.wordpressplanet.org/?panel_from_domain='.$siteurl,
+        			  'Added for free from version 3.0.0 so have fun with ',
         			  $file_dir.'images/template-90x90.png',
-        			  '10'
+        			  'free'
         			  ),
 
 
         		array('Sendit Pro Css Inliner',
         			  'sendit-css-inliner/sendit-pro-css-inliner.php',
         			  'http://sendit.wordpressplanet.org/plugin-shop/sendit-pro-auto-css-inliner/?panel_from_domain='.$siteurl,
-        			  'Let your reader see the same email! No more timeless Inline css coding, let Sendit Pro Css inliner do for you',
+        			  'Let your reader see the same email! No more timeless Inline css coding, let Sendit Pro Css inliner do for you, added for free from version 3.0.0',
         			  $file_dir.'images/css_inliner-90x90.png',
-        			  '5'
+        			  'free'
         			  ),
 
         		array('Sendit Pro More Fields',
         			  'sendit-morefields/sendit-morefields.php',
         			  'http://sendit.wordpressplanet.org/plugin-shop/sendit-pro-more-fields/?panel_from_domain='.$siteurl,
-        			  'Add Informations field to your widget form simply drag and drop fields (name,city etc)',
+        			  'Add Informations field to your widget form simply drag and drop fields (name,city etc). Currently refactoring',
         			  $file_dir.'images/morefields-90x90.jpg',
         			  '5'
         			  ),

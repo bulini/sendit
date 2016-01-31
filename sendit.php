@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Sendit 3
+Plugin Name: Sendit
 Plugin URI: http://www.giuseppesurace.com/sendit-wp-newsletter-mailing-list/
 Description: Wordpress newsletter plugin. Sendit is a friendly and easy newsletter and mailing lists plugin for WordPress, born to make newsletter delivery management a great experience.
-Version: 3.0.0
+Version: 2.4.0
 Author: Giuseppe Surace
 Author URI: http://sendit.wordpressplanet.org
 */

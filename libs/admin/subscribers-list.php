@@ -591,7 +591,7 @@ function update_contact()
 	),
 	array( 'id_email' => $id_contact )
 	);
-	echo 'o yes';
+	echo 'Contact updated';
 }
 
 add_action( 'wp_ajax_delete_contact', 'delete_contact' );
