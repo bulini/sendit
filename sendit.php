@@ -124,77 +124,13 @@ function sendit_cron_ignore() {
 }
 
 
-
-
-
-//add_action('wp_head', 'sendit_js');
-//add_action('wp_head', 'sendit_loading_image');
 add_action('wp_head', 'sendit_register_head');
 add_action('plugins_loaded','DisplayForm');
 add_action('admin_menu', 'gestisci_menu');
 
-add_action('admin_head', 'sendit_admin_head');
 add_action('init', 'sendit_custom_post_type_init');
 add_action('save_post', 'sendit_save_postdata');
 
 add_action('save_post', 'send_newsletter');
-
-/*
-Sendit Welcome Screen
-*/
-
-register_activation_hook( __FILE__, 'sendit_welcome_screen_activate' );
-function sendit_welcome_screen_activate() {
-  set_transient( '_sendit_welcome_screen_activation_redirect', true, 30 );
-}
-
-add_action( 'admin_init', 'sendit_welcome_screen_do_activation_redirect' );
-function sendit_welcome_screen_do_activation_redirect() {
-  // Bail if no activation redirect
-    if ( ! get_transient( '_sendit_welcome_screen_activation_redirect' ) ) {
-    return;
-  }
-
-  // Delete the redirect transient
-  delete_transient( '_sendit_welcome_screen_activation_redirect' );
-
-  // Bail if activating from network, or bulk
-  if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
-    return;
-  }
-
-  // Redirect to bbPress about page
-  wp_safe_redirect( add_query_arg( array( 'page' => 'sendit-welcome-screen-about' ), admin_url( 'index.php' ) ) );
-
-}
-
-add_action('admin_menu', 'sendit_welcome_screen_pages');
-
-function sendit_welcome_screen_pages() {
-  add_dashboard_page(
-    'Welcome To Welcome Screen',
-    'Welcome To Welcome Screen',
-    'read',
-    'sendit-welcome-screen-about',
-    'sendit_welcome_screen_content'
-  );
-}
-
-function sendit_welcome_screen_content() {
-  ?>
-  <div class="wrap">
-    <h2>New Sendit 3</h2>
-    <img src="">
-    <p>
-      A lot of things are changed. We added the Template manager for free and better subscription forms. Enjoy it!
-    </p>
-  </div>
-  <?php
-}
-add_action( 'admin_head', 'sendit_welcome_screen_remove_menus' );
-function sendit_welcome_screen_remove_menus() {
-    remove_submenu_page( 'index.php', 'sendit-welcome-screen-about' );
-}
-
 
 ?>

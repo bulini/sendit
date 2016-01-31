@@ -327,10 +327,10 @@ class Sendit_List_Table extends WP_List_Table {
           	//echo $_GET['lista'];
               //$code = md5(uniqid(rand(), true));
               $id_emails = implode(",", $_GET['subscriber']);
-              echo $id_emails;
+              //echo $id_emails;
 
               $emails=$wpdb->get_results("select * from $email_table where id_email in ($id_emails)");
-              print_r($emails);
+              //print_r($emails);
 
           if(count($emails)>0):
             $parent_list = $emails[0]->id_lista;
@@ -349,24 +349,6 @@ class Sendit_List_Table extends WP_List_Table {
           endif;
         }
 
-
-        if($_POST['emails_add']!="") {
-          $email_add= explode("\n", $_POST['emails_add']);
-          foreach ($email_add as $key => $value) {
-              if (!ereg("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", trim($value))) {
-               	echo '<div id="message" class="error"><p><strong>indirizzo email '.$value.' non valido!</strong></p></div>';
-              } else {
-        		$user_count = $wpdb->get_var("SELECT COUNT(*) FROM $table_email where email ='$value' and id_lista = '$_GET[lista]' order by email;");
-                   if($user_count>0) {
-                       echo "<div class=\"error\"><p><strong>".sprintf(__('email %s already present', 'sendit'), $value)."</strong></p></div>";
-                   } else {
-                       $code = md5(uniqid(rand(), true));
-                       $wpdb->query("INSERT INTO $table_email (email,id_lista, magic_string, accepted) VALUES ('$value', '$_POST[id_lista]', '$code', 'y')");
-                        echo '<div class="updated fade"><p><strong>'.sprintf(__('email %s added succesfully!', 'sendit'), $value).'</strong></p></div>';
-                   }
-        	  }
-           }
-         }
 
     }
 
@@ -539,14 +521,22 @@ function get_contact($id)
 add_action( 'wp_ajax_add_contacts', 'add_contacts' );
 
 function add_contacts() {
-	 $list = 1;
+
+   $migrations=new migrations();
+ 	 $liste = $migrations->GetLists();
 	 //print_r($contact);
 	 $html= '<h3><span class="dashicons-before dashicons-admin-users"></span>Add Contacts #</h3>';
    $html.='<div id="contacts_modal_response"></div>';
 	 $html.= '<form method="post" class="senditcontactaddform">';
+   $html.='<label for="list_id" class="sendit-form-label">Mailing List</label><br />';
+
+   $html.='<select name="list_id" id="list_id">';
+   foreach($liste as $lista){
+     $html.='<option value="'.$lista->id_lista.'">'.$lista->id_lista.' - '.$lista->nomelista.'</option>';
+   }
+   $html.='</select><br />';
 	 $html.= '<label for="email" class="sendit-form-label">email (1 per line)</label><br />
-	 		      <textarea id="emails" name="emails" cols="50" rows="10"></textarea>';
-	 $html.= '<label for="accepted" class="sendit-form-label">Confirmed</label><br />';
+	 		      <textarea id="emails" name="emails" cols="50" rows="10" required></textarea><hr />';
 	 $html.= '<button type="button" id="insert_contacts" class="insert_contacts button action">Save</button>';
 	 $html.= '</form>';
 	 echo $html;
@@ -641,22 +631,23 @@ function insert_contacts()
   global $wpdb;
   $table_email   = $wpdb->prefix . "nl_email";
   if($_POST['emails']!="") {
+    $list_id = (int) $_POST['list_id'];
     $email_add= explode("\n", $_POST['emails']);
     foreach ($email_add as $key => $value) {
         if (!ereg("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", trim($value))) {
-         	echo '<div id="message" class="error"><p><strong>indirizzo email '.$value.' non valido!</strong></p></div>';
+         	echo '<div id="message" class="error"><p><strong>indirizzo email '.$value.' non valido!</strong></p></div>'; exit;
         } else {
-  		$user_count = $wpdb->get_var("SELECT COUNT(*) FROM $table_email where email ='$value' and id_lista = '$_GET[lista]' order by email;");
+  		$user_count = $wpdb->get_var("SELECT COUNT(*) FROM $table_email where email ='$value' and id_lista = $list_id order by email;");
              if($user_count>0) {
-                 echo "<div class=\"error\"><p><strong>".sprintf(__('email %s already present', 'sendit'), $value)."</strong></p></div>";
+                 echo "<div class=\"error\"><p><strong>".sprintf(__('email %s already present', 'sendit'), $value)."</strong></p></div>"; exit;
              } else {
                  $code = md5(uniqid(rand(), true));
-                 $wpdb->query("INSERT INTO $table_email (email,id_lista, magic_string, accepted) VALUES ('$value', '$_POST[id_lista]', '$code', 'y')");
+                 $wpdb->query("INSERT INTO $table_email (email,id_lista, magic_string, accepted) VALUES ('$value', $list_id, '$code', 'y')");
                   echo '<div class="updated fade"><p><strong>'.sprintf(__('email %s added succesfully!', 'sendit'), $value).'</strong></p></div>';
              }
   	  }
     }
-  }
+  } else { echo '<div id="message" class="error"><p><strong>'._('Please enter at least one or more email address. One per row', 'sendit').'</strong></p></div>'; exit;}
 }
 
 
@@ -664,76 +655,12 @@ function insert_contacts()
 
 
 
-add_action( 'admin_footer', 'admin_view');
+add_action( 'admin_head', 'sendit_admin_ajax_url');
 
-function admin_view() { ?>
+function sendit_admin_ajax_url() { ?>
 
 <script type="text/javascript">
 var sendit_ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
-  jQuery(document).ready(function($) {
-    //ajax
-    jQuery(document).on('click','.save_contact',
-      function (e) {
-	   $form = $('.senditcontactform');
-	   idcontact = $form.find( "input[name='id_email']" ).val();
-	   newcontact = $form.find( "input[name='email']" ).val();
-	   newstatus  = $form.find( "select[name='accepted']" ).val();
-        jQuery.post(sendit_ajaxurl, {
-					action: 'update_contact',
-					id_contact:  idcontact,
-					email: newcontact,
-					accepted: newstatus
-				}, function(output) {
-				//jQuery('#sendit_modal_response').html(output);
-				alert(output);
-			});
-
-        tb_remove();
-        $('#sendit-contact-'+idcontact).html(newcontact).css('color', '#5cb85c').css('font-weight', 'bold');
-        $('#sendit-contact-status-'+idcontact).html(newstatus).css('color', '#5cb85c').css('font-weight', 'bold');
-
-      }
-    );
-
-    jQuery(document).on('click','.destroy_contact',
-     function (e) {
-	   $form = $('.senditdeleteform');
-	   idcontact = $form.find( "input[name='id_email']" ).val();
-        jQuery.post(sendit_ajaxurl, {
-					action: 'destroy_contact',
-					id_contact:  idcontact,
-				}, function(output) {
-				//jQuery('#sendit_modal_response').html(output);
-				alert(output);
-			});
-
-        tb_remove();
-        $('#sendit-contact-'+idcontact).css('color', 'red').css('font-weight', 'bold');
-        $('#sendit-contact-status-'+idcontact).css('color', 'red').css('font-weight', 'bold');
-
-      }
-    );
-
-    jQuery(document).on('click','.insert_contacts',
-     function (e) {
-	   $form = $('.senditcontactaddform');
-	   emails = $form.find( "textarea[name='emails']" ).val();
-        jQuery.post(sendit_ajaxurl, {
-					action: 'insert_contacts',
-					emails:  emails,
-				}, function(output) {
-				jQuery('#contacts_modal_response').html(output);
-				//alert(emails);
-			});
-
-        //tb_remove();
-        //$('#sendit-contact-'+idcontact).css('color', 'red').css('font-weight', 'bold');
-        //$('#sendit-contact-status-'+idcontact).css('color', 'red').css('font-weight', 'bold');
-
-      }
-    );
-
-  });
 </script>
 <?php }
 

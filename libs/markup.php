@@ -20,21 +20,14 @@ function custom_styles() {
 add_action( 'wp_enqueue_scripts', 'custom_styles' );
 
 
-
-add_action('wp_head','sendit_ajaxurl');
-
 function sendit_ajaxurl() {
-?>
-<script type="text/javascript">
-var sendit_ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
-</script>
-<?php
+	?>
+	<script type="text/javascript">
+	var sendit_ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+	</script>
+	<?php
 }
-
-
-
-
-
+add_action('wp_head','sendit_ajaxurl');
 
 
 add_action('wp_ajax_sendit_subscription', 'sendit_subscription' );
@@ -47,29 +40,12 @@ function sendit_subscription() {
 }
 
 
-
-/*--------------------------------------------------------------
-end new sendit
---------------------------------------------------------------*/
-
-
-
-
-
-
 function sendit_shortcode($atts) {
-     $markup=sendit_markup($atts[id]);
-     return $markup;
+   $markup=sendit_markup($atts[id]);
+   return $markup;
 }
 
-
-
 add_shortcode('newsletter', 'sendit_shortcode');
-
-
-
-
-
 
 
 function sendit_markup($id)
@@ -104,75 +80,6 @@ function sendit_markup($id)
 
 function sendit_register_head() {
     echo '<style type="text/css">'.get_option('sendit_css').'</style>';
-}
-
-
-
-function sendit_js()
-{
-  // Spingo js su header (x luca)
-  wp_print_scripts( array('jquery' ));
-
-  // Define custom JavaScript function
-?>
-		<script type="text/javascript">
-		jQuery(document).ready(function(){
-		jQuery('input#email_add').focus(function() {
-   			jQuery(this).val('');
-		});
-
-
-		jQuery('input.req').blur(function() {
-
-   			if (jQuery(this).val() == "") {
-  				jQuery(this).after('<span class="sendit_error">Required!</span>');
- 			 	valid = false;
-			} else {
-				  jQuery(this).find('span.sendit_error').hide();
-				  valid = true;
-			}
-
-		});
-
-
-			jQuery('#sendit_subscribe_buttons').click(function(){
-
-				jQuery.ajax({
-				beforeSend: function() { jQuery('#sendit_wait').show(); jQuery('#sendit_subscribe_button').hide();},
-		        complete: function() { jQuery('#sendit_wait').hide(); jQuery('#sendit_subscribe_button').show(); },
-				type: "POST",
-		      	//data: ({jQuery("#senditform").serialize()}),
-		      	data: ({options : jQuery("#senditform").serialize(), email_add : jQuery('#email_add').val(),lista : jQuery('#lista').val()}),
-		      	url: '<?php bloginfo( 'wpurl' ); ?>/wp-content/plugins/sendit/submit.php',
-		  		success: function(data) {
-		    	<?php if(get_option('sendit_response_mode')=='alert'): ?>
-		   		alert(data);
-		   		<?php else: ?>
-		    	jQuery('#dati').html(data);
-		    	<?php endif; ?>
-
-
-		  }
-		});
-			});
-		});
-
-
-
-function checkemail(e){
-  var emailfilter = /^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i
-  return emailfilter.test(e);
-}
-function checkphone(e) {
- var filter = /[0-9]/
- return filter.test(e);
-}
-
-		</script>
-
-
-
-		<?php
 }
 
 
@@ -214,8 +121,5 @@ function Sendit_widget_options() {
 
 
     }
-
-
-
 
 ?>
