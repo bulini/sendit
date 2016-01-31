@@ -8,20 +8,20 @@ Author: Giuseppe Surace
 Author URI: http://sendit.wordpressplanet.org
 */
 
-include_once plugin_dir_path( __FILE__ ).'/libs/install-core.php';
-include_once plugin_dir_path( __FILE__ ).'/libs/actions.php';
-include_once plugin_dir_path( __FILE__ ).'/libs/markup.php';
-include_once plugin_dir_path( __FILE__ ).'/libs/admin/subscribers-list.php';
-include_once plugin_dir_path( __FILE__ ).'/libs/admin/admin-core.php';
-include_once plugin_dir_path( __FILE__ ).'/libs/extensions-handler.php';
-include_once plugin_dir_path( __FILE__ ).'/libs/import.php';
-include_once plugin_dir_path( __FILE__ ).'/libs/add-on/template-manager.php';
-include_once plugin_dir_path( __FILE__ ).'/libs/add-on/css-inliner.php';
+include_once plugin_dir_path( __FILE__ ).'libs/install-core.php';
+include_once plugin_dir_path( __FILE__ ).'libs/actions.php';
+include_once plugin_dir_path( __FILE__ ).'libs/markup.php';
+include_once plugin_dir_path( __FILE__ ).'libs/admin/subscribers-list.php';
+include_once plugin_dir_path( __FILE__ ).'libs/admin/admin-core.php';
+include_once plugin_dir_path( __FILE__ ).'libs/extensions-handler.php';
+include_once plugin_dir_path( __FILE__ ).'libs/import.php';
+include_once plugin_dir_path( __FILE__ ).'libs/add-on/template-manager.php';
+include_once plugin_dir_path( __FILE__ ).'libs/add-on/css-inliner.php';
 
 //new folder filesystem pre setup
-include_once plugin_dir_path( __FILE__ ).'/libs/admin/meta-boxes.php';
-include_once plugin_dir_path( __FILE__ ).'/libs/frontend/frontend.php';
-include_once plugin_dir_path( __FILE__ ).'/libs/admin/migrations.php';
+include_once plugin_dir_path( __FILE__ ).'libs/admin/meta-boxes.php';
+include_once plugin_dir_path( __FILE__ ).'libs/frontend/frontend.php';
+include_once plugin_dir_path( __FILE__ ).'libs/admin/migrations.php';
 
 load_plugin_textdomain('sendit', false, basename(dirname(__FILE__)) . '/languages'); //thanks to Davide http://www.jqueryitalia.org
 
